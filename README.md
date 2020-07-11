@@ -1,6 +1,6 @@
 # rewardDelivery
 
-This script is to controll the delivery of a reward.
+This script is to control the delivery of a reward.
 
 The user can choose if rewards should be delivered automatically at random intervals, or upon licking. The user can also choose how many times the mouse should lick before the reward is delivered.
 
