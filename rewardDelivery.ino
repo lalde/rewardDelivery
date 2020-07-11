@@ -1,12 +1,20 @@
 /*
- Uno Pin    AT42QT101X Board  Function
+This script is to control the delivery of a reward and is to be used with a
+lickmetre circuit composed by:
+- a capacitive lick sensor (Sparksfun Capacitive Touch Breakout, AT42QT101X)
+- a solenoid valve to deliver the reward (NRValve, BP011-21IC)
 
- +5V        VDD               Power supply
- GND        GND               Ground
- 2          OUT               Capacitive touch state output
-
+The user can choose if rewards should be delivered automatically at random intervals, or upon licking.
+The user can also choose how many times the mouse should lick before the reward is delivered.
+The settings can be adjusted in the section "Task rules"
 
  Written by Lucie Descamps and Elise Reppe Olsen 2020
+
+ ______________________________________________________________________________
+| To-do   ༼∩☉ل͜☉༽⊃━☆ﾟ. * ･ ｡ﾟ                                                 |
+| - add more lickports/solenoids to fit our need for the object reward task    |
+| - add setting to chose which ports should deliver the reward                 |
+|______________________________________________________________________________|
  */
 
 
@@ -19,7 +27,6 @@ int offDuration = 1500;               // Value in ms between solenoid openings =
 // Constants
 const int touch_sensor = 2;           // Input pin for state of touch sensor
 int solenoid = 8;                     // Pinout for TTL to solenoid valve
-
 int licksCount = 0;                   // Variable for counting number of licks
 int var = 0;
 long randOff = 0;                     // Initialize a variable for the OFF time
@@ -32,7 +39,7 @@ void setup() {
   pinMode(solenoid, OUTPUT);          // Set ttl pin to output to signal solenoid valve when to open
   // randomize
   randomSeed (analogRead (0));
-  // Set up serial port
+  // set up serial port
   Serial.begin(9600);
   while (! Serial);
   Serial.println("No licks yet...");  // Message to send initially (no licks detected yet).
@@ -40,7 +47,7 @@ void setup() {
 
 // Function to deliver reward *at random intervals*
 void randomDelivery() {
-   randOff = random (5000, 15000);    // generates OFF time between 5 and 15 seconds
+   randOff = random (5000, 15000);    // Generates OFF time between 5 and 15 seconds
    digitalWrite(solenoid, HIGH);      // Opens solenoid and deliver reward
    Serial.println("Reward delivered");
    delay(openDuration);
@@ -51,7 +58,7 @@ void randomDelivery() {
 // Function to know if reward delivery should be active or passive
 void requiresLicking() {
   if (requiresLick == true){
-    deliversReward();
+    countingLicks();
   }else if (requiresLick == false){
     randomDelivery();
   }
@@ -66,7 +73,6 @@ void deliversReward() {
      delay(offDuration);
 }
 
-
 // Function to count how many licks are registered
 void countingLicks() {
     if(digitalRead(touch_sensor) > var)
@@ -76,12 +82,12 @@ void countingLicks() {
     Serial.println(" Lick detected");
   }
   if(digitalRead(touch_sensor) == 0) {var = 0;}
-  delay(1); // Delay for stability.
+  delay(1);                           // Delay for stability.
 
   if (licksCount == numberOfLicksRequired)
   { Serial.println("Lick threshold met");
   deliversReward();
-  licksCount = 0;  // Reset the lick count after reward delivery
+  licksCount = 0;                     // Reset the lick count after reward delivery
              }
 }
 
@@ -89,5 +95,4 @@ void countingLicks() {
 void loop() {
   countingLicks();
   requiresLicking();
-  deliversReward();
 }
