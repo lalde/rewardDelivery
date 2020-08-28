@@ -19,17 +19,34 @@ The settings can be adjusted in the section "Task rules"
 
 
  // Task rules, change this
-bool requiresLick = true;             // If true, requires animal to lick to deliver reward. If false, will deliver reward at random intervals.
-int numberOfLicksRequired = 15;       // Number of lick(s) required to deliver reward
-int openDuration = 500;               // Duration of solenoid opening (in ms) => quantity of reward delivered
-int offDuration = 1500;               // Value in ms between solenoid openings => refraction period
+bool requiresLick = true;              // If true, requires animal to lick to deliver reward. If false, will deliver reward at random intervals.
+int numberOfLicksRequired = 15;        // Number of lick(s) required to deliver reward
+int openDuration = 500;                // Duration of solenoid opening (in ms) => quantity of reward delivered
+int offDuration = 1500;                // Value in ms between solenoid openings => refraction period
+touch_sensor = lickIn_1                // Enter here which touch sensor/lick port should be the one delivering the reward.
+solenoid = lickOut_1                   // Enter here which touch /lick port should be the one delivering the reward.
+
 
 // Constants
-const int touch_sensor = 2;           // Input pin for state of touch sensor
-int solenoid = 8;                     // Pinout for TTL to solenoid valve
-int licksCount = 0;                   // Variable for counting number of licks
+//Lick Port 1
+const int lickIn_1 = 2;                // Input pin for state of touch sensor
+int lickOut_1 = 3;                     // Pinout for TTL to solenoid valve
+
+//Lick Port 2
+const int lickIn_2 = 4;                // Input pin for state of touch sensor
+int lickOut_2 = 5;                     // Pinout for TTL to solenoid valve
+
+//Lick Port 3
+const int lickIn_3 = 6;                // Input pin for state of touch sensor
+int lickOut_3 = 7;                     // Pinout for TTL to solenoid valve
+
+//Lick Port 4
+const int lickIn_4 = 8;                // Input pin for state of touch sensor
+int lickOut_4 = 9;                     // Pinout for TTL to solenoid valve
+
+int licksCount = 0;                    // Variable for counting number of licks
 int var = 0;
-long randOff = 0;                     // Initialize a variable for the OFF time
+long randOff = 0;                      // Initialize a variable for the OFF time
 
 
 // Set-up
